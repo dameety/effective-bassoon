@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Front\PostController;
+use App\Http\Controllers\Front\LandingController;
+use App\Http\Controllers\Back\PostController as BackPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', LandingController::class)->name('landing');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+
+Route::name('front.')
+    ->group(function () {
+        Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
+    });
+
+
+Route::name('back.')
+    ->middleware(["auth"])
+    ->prefix('back')
+    ->group(function () {
+        Route::resource('posts', BackPostController::class)->except(['edit', 'update', 'destroy']);
+    });
