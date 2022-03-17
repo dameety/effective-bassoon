@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
         DB::table('posts')->delete();
 
         \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@email.com',
+            'name' => 'System Admin',
+            'email' => config('core.system_generated_admin_user'),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
